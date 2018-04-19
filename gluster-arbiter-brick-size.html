@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .container {
+      margin:auto;
+      width: 250px;
+      margin-top: 30px;
+      }
+      .sep{
+      width: 100%;
+      height: 20px;
+      }
+      #in{
+      background-color: #eee;
+      padding: 10px;
+      }
+      #dash{
+      width: 200px;
+      }
+      #data-brick{
+      background-color: blue;
+      height: 10px;
+      width: 100%;
+      }
+
+      #arbiter-brick{
+      background-color: green;
+      height: 10px;
+      }
+    </style>
+
+ 
+  </head>
+  <body>
+    <div class="container">
+      <h2>Gluster Arbiter brick capacity requirements</h2>
+      <div id="in">
+        <p>Edit Values of Data Brick and Avergage file size to suit your requirement</p>
+        <div class="sep"></div>
+        <p>Data Brick Size in MB</p>
+        <input type="text" id="data-brick-size" value="1000000"/>
+        <p>Average File size in KB</p>
+        <input type="text" id="avg-file-size" value="1000"/>
+      </div>
+      <div class="sep"></div>
+      <div class="sep"></div>
+      <div id="dash">
+        Data Brick (<span id="msg1"></span>)
+        <div id="data-brick"></div>
+        <div class="sep"></div>
+        Arbiter Brick (<span id="msg2"></span>)
+        <div id="arbiter-brick"></div>
+      </div>
+    </div>
+    <script>
+      window.onload = function(e){ 
+      dataSizeEle = document.getElementById("data-brick-size");
+      avgSizeEle = document.getElementById("avg-file-size");
+      arbiterBrick = document.getElementById("arbiter-brick");
+      msg1 = document.getElementById("msg1");
+      msg2 = document.getElementById("msg2");
+
+      dataSizeEle.onkeyup = function() { updateGraphs();};
+      avgSizeEle.onkeyup = function() { updateGraphs();};
+      updateGraphs();
+      }
+      function updateGraphs()
+      {
+      console.log("changed");
+      var arbiterSize = 4 * (parseInt(dataSizeEle.value, 10) * 1000 / parseInt(avgSizeEle.value, 10));
+      arbiterSize = arbiterSize / 1000;
+      var p = parseInt(arbiterSize, 10) * 100 / parseInt(dataSizeEle.value, 10);
+      console.log(dataSizeEle.value, arbiterSize, p);
+      arbiterBrick.style.width = p + "%";
+      msg1.innerHTML = dataSizeEle.value + "MB";
+      msg2.innerHTML = arbiterSize + "MB";
+      }
+      
+    </script>
+    
+  </body>
+</html>
